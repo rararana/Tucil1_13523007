@@ -17,7 +17,7 @@ public class Main {
             Header.setHeader(n, m, p, s);
             List<String> blockLines = new ArrayList<>();
             String line;
-            while ((line = br.readLine()) != null) {
+            while((line = br.readLine()) != null){
                 blockLines.add(line);
             }
 
@@ -31,15 +31,18 @@ public class Main {
                 System.out.println("Banyak kasus yang ditinjau: " + DefaultSolver.count);
                 System.out.println("Waktu eksekusi: " + (DefaultSolver.end - DefaultSolver.start) + " ms");
                 
-                System.out.print("Apakah anda ingin menyimpan solusi? (ya/tidak) ");
-                String save = sc.nextLine();
-                if(save.equalsIgnoreCase("ya")){
-                    System.out.print("Masukkan nama file: ");
-                    String saveFilename = sc.nextLine();
-                    Header.saveAsFile(DefaultSolver.board, saveFilename);
-                } else {
-                    System.out.println("Solusi tidak disimpan.");
+                if(DefaultSolver.foundSolution){
+                    System.out.print("Apakah anda ingin menyimpan solusi? (ya/tidak) ");
+                    String save = sc.nextLine();
+                    if(save.equalsIgnoreCase("ya")){
+                        System.out.print("Masukkan nama file: ");
+                        String saveFilename = sc.nextLine();
+                        Header.saveAsFile(DefaultSolver.board, saveFilename);
+                    } else {
+                        System.out.println("Solusi tidak disimpan.");
+                    }
                 }
+
             } else {
                 System.out.println("Mode bukan DEFAULT, default solver tidak dijalankan.");
             }

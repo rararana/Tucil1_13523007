@@ -29,14 +29,15 @@ public class DefaultSolver{
         ANSI[21] = "\033[4;35m"; // PURPLE UNDERLINE
         ANSI[22] = "\033[4;36m";   // CYAN UNDERLINE
         ANSI[23] = "\033[4;37m";  // WHITE UNDERLINE
-        ANSI[24] = "\033[0;90m";  // BLACK BG
-        ANSI[25] = "\033[0;91m";    // RED BG
+        ANSI[24] = "\033[40m";  // BLACK BG
+        ANSI[25] = "\033[41m";    // RED BG
     }
 
     static char[][] board;
     List<Shape> shapes;
     Map<Character, List<Pair>> blockMap;  
     static long count = 0;
+    static boolean foundSolution;
 
     //KONSTRUKTOR
     public DefaultSolver(){
@@ -147,11 +148,11 @@ public class DefaultSolver{
         return false;
     }
     public void readBlocks(List<String> blockLines){
-        int i = 0, blockSum = 0;
+        int i = 0, blockSum = 0, cnt = 1;
         char prev = ' ';
         boolean flag = true;
         for(String line : blockLines){
-            for(int j=0; j <line.length(); j++){
+            for(int j=0; j<line.length(); j++){
                 char a = line.charAt(j);
                 if(a == ' ') continue;
                 if(flag || a == prev){
@@ -159,6 +160,7 @@ public class DefaultSolver{
                     blockSum++;
                     blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
                 }else{
+                    cnt++;
                     shapes.add(new Shape(prev));
                     blockSum++;
                     blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
@@ -169,14 +171,20 @@ public class DefaultSolver{
         }
         shapes.add(new Shape(prev));
         start = System.currentTimeMillis();
-        if(blockSum != Header.N*Header.M){
+        if(cnt != Header.P){
+            System.out.println("Jumlah blok puzzle tidak sesuai.");
+            foundSolution = false;
+        } else if(blockSum != Header.N*Header.M) {
             System.out.println("Tidak ada solusi.");
+            foundSolution = false;
         } else {
             if(solve(0)){
                 System.out.println("Solusi ditemukan!");
                 printBoard();
+                foundSolution = true;
             }else{
                 System.out.println("Tidak ada solusi.");
+                foundSolution = false;
             }
         }
         end = System.currentTimeMillis();
