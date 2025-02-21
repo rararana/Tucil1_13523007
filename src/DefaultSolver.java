@@ -1,6 +1,38 @@
 import java.util.*;
 
 public class DefaultSolver{
+    public static final String RESET = "\033[0m";  // Text Reset
+    static final String[] ANSI = new String[26];
+    static long start, end;
+    static{
+        ANSI[0] = "\033[0;30m";   // BLACK
+        ANSI[1] = "\033[0;31m";     // RED
+        ANSI[2] = "\033[0;32m";   // GREEN
+        ANSI[3] = "\033[0;33m";  // YELLOW
+        ANSI[4] = "\033[0;34m";    // BLUE
+        ANSI[5] = "\033[0;35m";  // PURPLE
+        ANSI[6] = "\033[0;36m";    // CYAN
+        ANSI[7] = "\033[0;37m";   // WHITE
+        ANSI[8] = "\033[1;30m";  // BLACK BOLD
+        ANSI[9] = "\033[1;31m";    // RED BOLD
+        ANSI[10] = "\033[1;32m";  // GREEN BOLD
+        ANSI[11] = "\033[1;33m"; // YELLOW BOLD
+        ANSI[12] = "\033[1;34m";   // BLUE BOLD
+        ANSI[13] = "\033[1;35m"; // PURPLE BOLD
+        ANSI[14] = "\033[1;36m";   // CYAN BOLD
+        ANSI[15] = "\033[1;37m";  // WHITE BOLD
+        ANSI[16] = "\033[4;30m";  // BLACK UNDERLINE
+        ANSI[17] = "\033[4;31m";    // RED UNDERLINE
+        ANSI[18] = "\033[4;32m";  // GREEN UNDERLINE
+        ANSI[19] = "\033[4;33m"; // YELLOW UNDERLINE
+        ANSI[20] = "\033[4;34m";   // BLUE UNDERLINE
+        ANSI[21] = "\033[4;35m"; // PURPLE UNDERLINE
+        ANSI[22] = "\033[4;36m";   // CYAN UNDERLINE
+        ANSI[23] = "\033[4;37m";  // WHITE UNDERLINE
+        ANSI[24] = "\033[0;90m";  // BLACK BG
+        ANSI[25] = "\033[0;91m";    // RED BG
+    }
+
     static char[][] board;
     List<Shape> shapes;
     Map<Character, List<Pair>> blockMap;  
@@ -136,7 +168,7 @@ public class DefaultSolver{
             i++;
         }
         shapes.add(new Shape(prev));
-
+        start = System.currentTimeMillis();
         if(blockSum != Header.N*Header.M){
             System.out.println("Tidak ada solusi.");
         } else {
@@ -147,10 +179,14 @@ public class DefaultSolver{
                 System.out.println("Tidak ada solusi.");
             }
         }
+        end = System.currentTimeMillis();
     }
     private void printBoard(){
-        for(char[] row : board){
-            System.out.println(new String(row));
+        for(int i=0; i<Header.N; i++){
+            for(int j=0; j<Header.M; j++){
+                System.out.print(ANSI[board[i][j]-'A']+board[i][j]+RESET);
+            }
+            System.out.println();
         }
     }
 }

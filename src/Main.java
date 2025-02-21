@@ -23,13 +23,13 @@ public class Main {
 
             if (Header.S.equals("DEFAULT")) {
                 DefaultSolver solver = new DefaultSolver();
-                long start = System.currentTimeMillis();
+                // long start = System.currentTimeMillis();
                 solver.readBlocks(blockLines);
-                long end = System.currentTimeMillis();
+                //long end = System.currentTimeMillis();
 
                 System.out.println();
                 System.out.println("Banyak kasus yang ditinjau: " + DefaultSolver.count);
-                System.out.println("Waktu eksekusi: " + (end - start) + " ms");
+                System.out.println("Waktu eksekusi: " + (DefaultSolver.end - DefaultSolver.start) + " ms");
                 
                 System.out.print("Apakah anda ingin menyimpan solusi? (ya/tidak) ");
                 String save = sc.nextLine();
