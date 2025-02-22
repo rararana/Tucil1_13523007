@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class DefaultSolver{
+public class CustomSolver{
     public static final String RESET = "\033[0m";  // Text Reset
     static final String[] ANSI = new String[26];
     static long start, end;
@@ -40,21 +40,15 @@ public class DefaultSolver{
     static boolean foundSolution;
 
     //KONSTRUKTOR
-    public DefaultSolver(){
+    public CustomSolver(){
         board = new char[Header.N][Header.M];
         this.shapes = new ArrayList<>();
         this.blockMap = new HashMap<>();
-
-        for(int i=0; i<Header.N; i++){
-            for(int j=0; j<Header.M; j++){
-                board[i][j] = '.';
-            }
-        }
     }
-    private boolean isFilled() {
+    private boolean isFilled(){
         for(int i=0; i<Header.N; i++){
             for(int j=0; j<Header.M; j++){
-                if(board[i][j] == '.'){
+                if(board[i][j] == 'X'){
                     return false;
                 }
             }
@@ -90,7 +84,7 @@ public class DefaultSolver{
     private boolean canPlace(int x, int y, List<Pair> shape){
         for(Pair p : shape){
             int nx = x + p.x, ny = y + p.y;
-            if(nx >= Header.N || ny >= Header.M || board[nx][ny] != '.'){
+            if(nx >= Header.N || ny >= Header.M || board[nx][ny] != 'X'){
                 return false;
             }
         }
@@ -99,7 +93,7 @@ public class DefaultSolver{
     private void placeBlock(int x, int y, List<Pair> shape, char c, boolean place){
         for(Pair p : shape){
             int nx = x + p.x, ny = y + p.y;
-            board[nx][ny] = place ? c : '.';
+            board[nx][ny] = place ? c : 'X';
         }
     }
     private List<List<Pair>> transform(List<Pair> shape){
@@ -133,7 +127,7 @@ public class DefaultSolver{
 
         for(List<Pair> transformed : allTransforms){
             for(int i=0; i<Header.N; i++) {
-                for (int j=0; j<Header.M; j++) {
+                for(int j=0; j<Header.M; j++){
                     if(canPlace(i, j, transformed)){
                         placeBlock(i, j, transformed, currentShape.getSymbol(), true);
                         currentShape.setPlaced(true);
@@ -148,34 +142,41 @@ public class DefaultSolver{
         return false;
     }
     public void readBlocks(List<String> blockLines){
-        int i = 0, blockSum = 0, cnt = 1;
+        int i = 0, blockSum = 0, cnt = 1, row = 0, cntX = 0;
         char prev = ' ';
         boolean flag = true;
         for(String line : blockLines){
             for(int j=0; j<line.length(); j++){
-                char a = line.charAt(j);
-                if(a == ' ') continue;
-                if(flag || a == prev){
-                    flag = false;
-                    blockSum++;
-                    blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
+                if(row < Header.N){
+                    board[row][j] = line.charAt(j);
+                    if(board[row][j] == 'X') cntX++;
                 }else{
-                    cnt++;
-                    shapes.add(new Shape(prev));
-                    blockSum++;
-                    i = 0;
-                    blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
+                    char a = line.charAt(j);
+                    if(a == ' ') continue;
+                    if(flag || a == prev){
+                        flag = false;
+                        blockSum++;
+                        blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
+                    }else{
+                        cnt++;
+                        shapes.add(new Shape(prev));
+                        blockSum++;
+                        i = 0;
+                        blockMap.computeIfAbsent(a, key -> new ArrayList<>()).add(new Pair(i, j));
+                    }
+                    prev = a;
                 }
-                prev = a;
+
             }
             i++;
+            row++;
         }
         shapes.add(new Shape(prev));
         start = System.currentTimeMillis();
         if(cnt != Header.P){
             System.out.println("Jumlah blok puzzle tidak sesuai.");
             foundSolution = false;
-        } else if(blockSum != Header.N*Header.M) {
+        } else if(blockSum != cntX) {
             System.out.println("Tidak ada solusi.");
             foundSolution = false;
         } else {
@@ -193,7 +194,10 @@ public class DefaultSolver{
     private void printBoard(){
         for(int i=0; i<Header.N; i++){
             for(int j=0; j<Header.M; j++){
-                System.out.print(ANSI[board[i][j]-'A']+board[i][j]+RESET);
+                if(board[i][j] == '.'){
+                    System.out.print(' ');
+                    board[i][j] = ' ';
+                } else System.out.print(ANSI[board[i][j]-'A']+board[i][j]+RESET);
             }
             System.out.println();
         }

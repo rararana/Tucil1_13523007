@@ -1,11 +1,16 @@
-3 6 9
-DEFAULT
-AA
+5 7 5
+CUSTOM
+...X...
+.XXXXX.
+XXXXXXX
+.XXXXX.
+...X...
+A
+AAA
 BB
-CC
-DD
-EE
-FF
-GG
-HH
-II
+BBB
+CCCC
+ C
+D
+EEE
+E
