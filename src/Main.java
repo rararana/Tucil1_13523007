@@ -91,7 +91,7 @@ public class Main {
                     }
                 }
             } else {
-                System.out.println("Mode bukan CUSTOM, Custom solver tidak dijalankan.");
+                System.out.println("Mode tidak dikenali, solver tidak dijalankan.");
             }
         } catch (IOException e) {
             System.out.println("Terjadi kesalahan saat membaca file: " + e.getMessage());
