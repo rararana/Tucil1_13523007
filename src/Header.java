@@ -79,3 +79,25 @@ public class Header{
         }
     }
 }
+
+class Shape{
+    private final char symbol;
+    private boolean placed;
+
+    Shape(char symbol){
+        this.symbol = symbol;
+        this.placed = false;
+    }
+
+    char getSymbol(){
+        return symbol;
+    }
+
+    boolean isPlaced(){
+        return placed;
+    }
+
+    void setPlaced(boolean placed){
+        this.placed = placed;
+    }
+}
