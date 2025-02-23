@@ -1,8 +1,11 @@
 import java.io.*;
 import java.util.*;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
+        SwingUtilities.invokeLater(GUI::new);
+        
         System.out.println(" ▄█  ████████▄           ▄███████▄ ███    █▄   ▄███████▄   ▄███████▄   ▄█          ▄████████    ▄████████         ▄███████▄    ▄████████  ▄██████▄  \r\n" + //
                         "███  ███    ███         ███    ███ ███    ███ ██▀     ▄██ ██▀     ▄██ ███         ███    ███   ███    ███        ███    ███   ███    ███ ███    ███ \r\n" + //
                         "███▌ ███    ███         ███    ███ ███    ███       ▄███▀       ▄███▀ ███         ███    █▀    ███    ███        ███    ███   ███    ███ ███    ███ \r\n" + //
