@@ -18,7 +18,9 @@ javac Main.java
 
 ## Cara Menjalankan Program
 - Setelah dikomplasi, ketikkan perintah di bawah ini
+```
 [java Main]
+```
 
 ## Author
 Ranashahira Reztaputri (13523007)
