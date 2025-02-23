@@ -1,5 +1,0 @@
-   A   
- AAABB 
-CCCCBBB
- CDEEE 
-   E   

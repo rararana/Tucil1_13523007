@@ -18,8 +18,8 @@ public class GUI extends JFrame {
 
         JPanel top = new JPanel();
         filePath = new JTextField(30);
-        JButton browseButton = new JButton("Browse");
-        process = new JButton("Process");
+        JButton browseButton = new JButton("Cari");
+        process = new JButton("Proses");
         browseButton.addActionListener(e -> chooseFile());
         process.addActionListener(e -> processFile());
         top.add(new JLabel("File Input: "));
@@ -64,7 +64,6 @@ public class GUI extends JFrame {
             return;
         }
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            long startTime = System.currentTimeMillis();
             String firstLine = br.readLine();
             String[] parts = firstLine.split(" ");
             int n = Integer.parseInt(parts[0]);
@@ -74,24 +73,26 @@ public class GUI extends JFrame {
             Header.setHeader(n, m, p, s);
             java.util.List<String> blockLines = new java.util.ArrayList<>();
             String line;
-            int caseCount = 0;
             while ((line = br.readLine()) != null) {
                 blockLines.add(line);
-                caseCount++;
             }
-
             char[][] board = null;
             hasSolution = false;
+            long startTime = 0, endTime = 0;
             if(Header.S.equals("DEFAULT")){
                 DefaultSolver solver = new DefaultSolver();
+                startTime = System.currentTimeMillis();
                 solver.readBlocks(blockLines);
+                endTime = System.currentTimeMillis();
                 if (DefaultSolver.foundSolution) {
                     board = DefaultSolver.board;
                     hasSolution = true;
                 }
             } else if(Header.S.equals("CUSTOM")){
                 CustomSolver solver = new CustomSolver();
+                startTime = System.currentTimeMillis();
                 solver.readBlocks(blockLines);
+                endTime = System.currentTimeMillis();
                 if (CustomSolver.foundSolution) {
                     board = CustomSolver.board;
                     hasSolution = true;
@@ -106,14 +107,20 @@ public class GUI extends JFrame {
                 displayBoard(board);
                 saveTxt.setEnabled(true);
                 saveImg.setEnabled(true);
+                if(Header.S.equals("DEFAULT")){
+                    timeLabel.setText("Waktu Eksekusi: " + (endTime - startTime) + " ms");
+                    caseLabel.setText("Jumlah Kasus: " + DefaultSolver.count);
+                } else {
+                    timeLabel.setText("Waktu Eksekusi: " + (endTime - startTime) + " ms");
+                    caseLabel.setText("Jumlah Kasus: " + CustomSolver.count);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Tidak ditemukan solusi.");
                 saveTxt.setEnabled(false);
                 saveImg.setEnabled(false);
+                timeLabel.setText("Waktu Eksekusi: 0 ms");
+                caseLabel.setText("Jumlah Kasus: 0");
             }
-            long endTime = System.currentTimeMillis();
-            timeLabel.setText("Waktu Eksekusi: " + (endTime - startTime) + " ms");
-            caseLabel.setText("Jumlah Kasus: " + caseCount);
         } catch(IOException e){
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat membaca file.");
         }
