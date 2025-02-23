@@ -19,7 +19,7 @@ javac Main.java
 ## Cara Menjalankan Program
 - Setelah dikomplasi, ketikkan perintah di bawah ini
 ```
-[java Main]
+java Main
 ```
 
 ## Author
