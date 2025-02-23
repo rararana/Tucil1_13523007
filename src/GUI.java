@@ -8,6 +8,7 @@ public class GUI extends JFrame {
     private JPanel boardPanel;
     private JScrollPane scrollPane;
     private boolean hasSolution = false;
+    private JLabel timeLabel, caseLabel;
 
     public GUI(){
         setTitle("IQ Puzzler Pro");
@@ -29,15 +30,23 @@ public class GUI extends JFrame {
         boardPanel = new JPanel();
         scrollPane = new JScrollPane(boardPanel);
         add(scrollPane, BorderLayout.CENTER);
-        JPanel bottom = new JPanel();
+        JPanel bottom = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
         saveTxt = new JButton("Simpan sebagai TXT");
         saveImg = new JButton("Simpan sebagai Gambar");
-        saveTxt.setEnabled(false); 
-        saveImg.setEnabled(false); 
+        saveTxt.setEnabled(false);
+        saveImg.setEnabled(false);
         saveTxt.addActionListener(e -> saveAsTxt());
         saveImg.addActionListener(e -> saveAsImage());
-        bottom.add(saveTxt);
-        bottom.add(saveImg);
+        buttonPanel.add(saveTxt);
+        buttonPanel.add(saveImg);
+        JPanel infoPanel = new JPanel();
+        timeLabel = new JLabel("Waktu Eksekusi: -");
+        caseLabel = new JLabel("Jumlah Kasus: -");
+        infoPanel.add(timeLabel);
+        infoPanel.add(caseLabel);
+        bottom.add(buttonPanel, BorderLayout.NORTH);
+        bottom.add(infoPanel, BorderLayout.SOUTH);
         add(bottom, BorderLayout.SOUTH);
         setVisible(true);
     }
@@ -48,13 +57,14 @@ public class GUI extends JFrame {
             filePath.setText(fileChooser.getSelectedFile().getAbsolutePath());
         }
     }
-    private void processFile(){
+    private void processFile() {
         String filename = filePath.getText();
         if(filename.isEmpty()){
             JOptionPane.showMessageDialog(this, "Pilih file terlebih dahulu! >:(");
             return;
         }
-        try(BufferedReader br = new BufferedReader(new FileReader(filename))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            long startTime = System.currentTimeMillis();
             String firstLine = br.readLine();
             String[] parts = firstLine.split(" ");
             int n = Integer.parseInt(parts[0]);
@@ -64,22 +74,25 @@ public class GUI extends JFrame {
             Header.setHeader(n, m, p, s);
             java.util.List<String> blockLines = new java.util.ArrayList<>();
             String line;
-            while((line = br.readLine()) != null){
+            int caseCount = 0;
+            while ((line = br.readLine()) != null) {
                 blockLines.add(line);
+                caseCount++;
             }
+
             char[][] board = null;
             hasSolution = false;
             if(Header.S.equals("DEFAULT")){
                 DefaultSolver solver = new DefaultSolver();
                 solver.readBlocks(blockLines);
-                if(DefaultSolver.foundSolution){
+                if (DefaultSolver.foundSolution) {
                     board = DefaultSolver.board;
                     hasSolution = true;
                 }
             } else if(Header.S.equals("CUSTOM")){
                 CustomSolver solver = new CustomSolver();
                 solver.readBlocks(blockLines);
-                if(CustomSolver.foundSolution){
+                if (CustomSolver.foundSolution) {
                     board = CustomSolver.board;
                     hasSolution = true;
                 }
@@ -92,12 +105,15 @@ public class GUI extends JFrame {
             if(hasSolution){
                 displayBoard(board);
                 saveTxt.setEnabled(true);
-                saveImg.setEnabled(true); 
+                saveImg.setEnabled(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Tidak ditemukan solusi.");
                 saveTxt.setEnabled(false);
                 saveImg.setEnabled(false);
             }
+            long endTime = System.currentTimeMillis();
+            timeLabel.setText("Waktu Eksekusi: " + (endTime - startTime) + " ms");
+            caseLabel.setText("Jumlah Kasus: " + caseCount);
         } catch(IOException e){
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat membaca file.");
         }

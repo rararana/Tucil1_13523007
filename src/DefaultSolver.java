@@ -171,26 +171,26 @@ public class DefaultSolver{
             i++;
         }
         shapes.add(new Shape(prev));
-        start = System.currentTimeMillis();
+        //start = System.currentTimeMillis();
         if(cnt != Header.P){
-            System.out.println("Jumlah blok puzzle tidak sesuai.");
+            //System.out.println("Jumlah blok puzzle tidak sesuai.");
             foundSolution = false;
         } else if(blockSum != Header.N*Header.M) {
-            System.out.println("Tidak ada solusi.");
+            //System.out.println("Tidak ada solusi.");
             foundSolution = false;
         } else {
             if(solve(0)){
-                System.out.println("Solusi ditemukan!");
-                printBoard();
+                //System.out.println("Solusi ditemukan!");
+                //printBoard();
                 foundSolution = true;
             }else{
-                System.out.println("Tidak ada solusi.");
+                //System.out.println("Tidak ada solusi.");
                 foundSolution = false;
             }
         }
-        end = System.currentTimeMillis();
+        //end = System.currentTimeMillis();
     }
-    private void printBoard(){
+    public static void printBoard(){
         for(int i=0; i<Header.N; i++){
             for(int j=0; j<Header.M; j++){
                 System.out.print(ANSI[board[i][j]-'A']+board[i][j]+RESET);
