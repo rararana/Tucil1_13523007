@@ -6,7 +6,7 @@
 Program ini berisi penyelesaian game IQ Puzzler Pro. Game ini memiliki objektif untuk bisa memenuhi papan dengan semua blok yang ada, blok dapat dirotasi maupun dicerminkan. Program penyelesaian game ini menggunakan algoritma brute force dan memanfaatkan rekursif untuk meninjau semua kemungkinan peletakan blok.
 
 ## Requirement dan Instalasi  
-- Java Development Kit
+- Java Development Kit 21
 
 ## Cara Kompilasi
 - Buka terminal atau Command Prompt
