@@ -1,6 +1,7 @@
 # Tucil1_13523007
 
 # IQ Puzzler Pro
+![image](https://github.com/user-attachments/assets/41206ee9-5c1f-4c91-b090-bd4c34ef69d8)
 
 ## Deskripsi  
 Program ini berisi penyelesaian game IQ Puzzler Pro. Game ini memiliki objektif untuk bisa memenuhi papan dengan semua blok yang ada, blok dapat dirotasi maupun dicerminkan. Program penyelesaian game ini menggunakan algoritma brute force dan memanfaatkan rekursif untuk meninjau semua kemungkinan peletakan blok.
